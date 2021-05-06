@@ -5,5 +5,6 @@ WordPressのDocker環境
 ```zsh
 % docker-compose up -d --build
 % docker-compose run --rm cli bash
+$ chmod +x /tmp/wp-install.sh
 $ /tmp/wp-install.sh
 ```
