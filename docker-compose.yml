@@ -1,0 +1,41 @@
+version: '2'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./mysql:/var/lib/mysql
+    restart: always
+    ports:
+      - 3306:3306
+    networks:
+      - wpnet
+    environment:
+      - MYSQL_DATABASE=wordpress
+      - MYSQL_USER=taise
+      - MYSQL_PASSWORD=taise
+      - MYSQL_ROOT_PASSWORD=root
+
+  app:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    volumes:
+      - ./html:/var/www/html
+      - ./wp-install.sh:/tmp/wp-install.sh
+    ports:
+      - 80:80
+    depends_on:
+      - db
+    networks:
+      - wpnet
+
+  cli:
+    image: wordpress:cli-2.3.0-php7.1
+    volumes_from: 
+      - app:rw
+    networks:
+      - wpnet
+
+networks:
+  wpnet:
